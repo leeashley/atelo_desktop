@@ -6,8 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 class NavegationFooter extends StatelessWidget {
   openAteloSite() async {
-    const url =
-        "https://www.paypal.com/donate?token=h7Ry0XnoMVi91q0tK0kyegneJwoqtZg5PJ8WQbDzrbRMbv-NeNvl7Ew0VInxP4yeXxDfusPyhIeoKwE8";
+    const url = "https://atelo.unicobit.com/#sidebar-footer";
     if (await canLaunch(url)) {
       await launch(url);
     } else {
