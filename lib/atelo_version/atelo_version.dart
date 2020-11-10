@@ -7,7 +7,7 @@ import 'package:version/version.dart';
 
 class AteloVersion {
   // ATRIBUTES
-  final Version currentVersion = Version(0, 1, 0);
+  final Version currentVersion = Version(0, 1, 2);
   String urlForNewVersion = "";
   final OperationSystemController operationSystemController;
   String applicationExtension;

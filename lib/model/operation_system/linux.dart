@@ -7,11 +7,12 @@ import 'operation_system.dart';
 class LinuxSystem extends OperationSystem {
   final String name = "linux";
   final String shellFile = Platform.environment['SHELL'].split('/')[2];
+  final String flutterRoot = Platform.environment['FLUTTER_ROOT'];
 
   @override
   Future<ProcessResult> checkFlutterInstallation() {
-    String envVariableFile = shellFile.contains("bash") ? ".bash_profile" : ".${shellFile}rc";
-    String command = "source \$HOME/$envVariableFile && flutter --version";
+    //String envVariableFile = shellFile.contains("bash") ? ".bash_profile" : ".${shellFile}rc";
+    String command = 'bash -i -c "source \$HOME/.${shellFile}rc && flutter --version"';
     return Process.run('bash', ['-c', '$command']);
   }
 
@@ -45,7 +46,6 @@ class LinuxSystem extends OperationSystem {
 
   @override
   Future<ProcessResult> setEnvironmentVariable() {
-    String envVariableFile = shellFile.contains("bash") ? ".bash_profile" : ".${shellFile}rc";
     String path =
         "'" + "\"" + "\$PATH:$installationSelectedPath${systemPathSeparator}flutter${systemPathSeparator}bin" + "\"" + "'";
     return Process.run(
@@ -53,15 +53,14 @@ class LinuxSystem extends OperationSystem {
         [
           '-c',
           'echo export PATH=$path'
-              " >> \$HOME${systemPathSeparator}$envVariableFile"
+              " >> \$HOME$systemPathSeparator.${shellFile}rc"
         ],
         runInShell: true);
   }
 
   @override
   Future<Process> flutterDoctor(bool diagnostic, {bool verbose = false, bool stdoutRun = false}) {
-    String envVariableFile = shellFile.contains("bash") ? ".bash_profile" : ".${shellFile}rc";
-    String command = "source \$HOME/$envVariableFile && flutter doctor";
+    String command = "$flutterRoot/bin/flutter doctor";
     return Process.start(
       'bash',
       ['-c', '$command'],
@@ -70,22 +69,19 @@ class LinuxSystem extends OperationSystem {
 
   @override
   Future<ProcessResult> updateFlutter() {
-    String envVariableFile = shellFile.contains("bash") ? ".bash_profile" : ".${shellFile}rc";
-    String command = "source \$HOME/$envVariableFile && flutter upgrade";
+    String command = 'bash -i -c "source \$HOME/.${shellFile}rc && flutter upgrade"';
     return Process.run('bash', ['-c', '$command'], runInShell: true);
   }
 
   @override
   Future<ProcessResult> switchChannel(String channel) {
-    String envVariableFile = shellFile.contains("bash") ? ".bash_profile" : ".${shellFile}rc";
-    String command = "source \$HOME/$envVariableFile && flutter channel $channel && flutter upgrade";
+    String command = 'bash -i -c "source \$HOME/.${shellFile}rc && flutter channel $channel && $flutterRoot/bin/flutter upgrade"';
     return Process.run('bash', ['-c', '$command'], runInShell: true);
   }
 
   @override
   Future<ProcessResult> listChannel() {
-    String envVariableFile = shellFile.contains("bash") ? ".bash_profile" : ".${shellFile}rc";
-    String command = "source \$HOME/$envVariableFile && flutter channel";
+    String command = 'bash -i -c "source \$HOME/.${shellFile}rc && flutter channel"';
     return Process.run('bash', ['-c', '$command'], runInShell: true);
   }
 }

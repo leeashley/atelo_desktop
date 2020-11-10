@@ -39,7 +39,7 @@ class NavegationFooter extends StatelessWidget {
           Padding(padding: EdgeInsets.only(top: 15)),
           RichText(
             text: TextSpan(
-                text: "${AteloLocalizations.of(context).ateloVersion} 0.1.0",
+                text: "${AteloLocalizations.of(context).ateloVersion} 0.1.2",
                 style: TextStyle(fontWeight: FontWeight.w400, color: Colors.white, fontSize: 15, letterSpacing: 1)),
           )
         ],
